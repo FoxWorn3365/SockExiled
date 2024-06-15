@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -63,17 +64,22 @@ namespace SockExiled.API.Features.NET
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"Failed to parse client {Id} message: {e.Message}\n | {e.Source}\n{e.StackTrace}");
+                    Log.Error($"{e.GetType().Name} - Failed to parse client {Id} message: {e.Message}\n | {e.Source}\n{e.StackTrace}\n\n---\n{e.InnerException.GetType().Name}@{e.InnerException.Message}:\n | {e.StackTrace}");
+                    continue;
                 }
             }
         }
 
-        public void Send(RawSocketMessage message)
+        public bool Send(RawSocketMessage message)
         {
             if (IsActive)
             {
-                Socket.Send(Encoding.UTF8.GetBytes(message.Encode()));
+                Log.Info($"Socket {Id} active, sending message with uniqId {message.UniqId}");
+                Socket.Send(Encoding.UTF8.GetBytes($"{message.Encode()}<EoM>"));
+                return true;
             }
+            Log.Error($"Socket {Id} is not active!");
+            return false;
         }
 
         public void Send(SocketMessage message) => Send(message as RawSocketMessage);
@@ -87,5 +93,8 @@ namespace SockExiled.API.Features.NET
 
         public void Send(string data, MessageType type, string? uniqid) => Send(BuildMessage(data, type, uniqid));
         // Remember to disable the nullable if you add more methods, ok fox?
+
+        #nullable disable
+        public void Close() => Socket.Close();
     }
 }

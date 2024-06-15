@@ -12,5 +12,7 @@ namespace SockExiled
         public bool IsEnabled { get; set; } = true;
 
         public bool Debug { get; set; } = false;
+
+        public List<string> Keys { get; set; } = new();
     }
 }

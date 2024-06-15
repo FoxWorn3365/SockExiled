@@ -40,7 +40,7 @@ namespace SockExiled.API.Features.NET
             }
         }
 
-        public SocketMessage(RawSocketMessage raw) : base(raw.Sender, raw.Receiver, raw.MessageType, raw.Content, raw.UniqId)
+        public SocketMessage(RawSocketMessage raw) : base(raw.Sender, raw.Receiver, raw.MessageType, raw.Content, raw.UniqId, raw.DataType)
         {
             RawContent = raw.Content;
             Content = null;

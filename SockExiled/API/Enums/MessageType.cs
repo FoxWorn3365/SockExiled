@@ -6,5 +6,7 @@
     SmartPing,
     Communication,
     ServerEvent,
-    ServerRequest
+    ServerRequest,
+    ClientEventResponse,
+    RequestEdit
 }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Exiled.API.Features;
+using Newtonsoft.Json;
 using SockExiled.API.Utilities;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace SockExiled.API.Features.NET
 
         public MessageType MessageType { get; }
 
-        public DataType DataType { get; set; } = DataType.Unknown;
+        public DataType DataType { get; set; }
 
         public string Content { get; }
 
@@ -39,10 +40,17 @@ namespace SockExiled.API.Features.NET
             UniqId = uniqId; 
         }
 
+        public RawSocketMessage(uint sender, uint? receiver, MessageType messageType, string content, string uniqId, DataType dataType) : this(sender, receiver, messageType, content, uniqId)
+        {
+            DataType = dataType;
+        }
+
         public RawSocketMessage(string json)
         {
             Dictionary<string, string> Data = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+
             Sender = uint.Parse(Data["sender"]);
+
             if ((!Data.ContainsKey("receiver") || Data["receiver"] is null || Data["receiver"] == string.Empty) && Sender is not 0)
             {
                 Receiver = 0;
@@ -53,6 +61,16 @@ namespace SockExiled.API.Features.NET
             }
 
             MessageType = (MessageType)Enum.Parse(typeof(MessageType), Data["message_type"]);
+
+            if (Data.ContainsKey("data_type"))
+            {
+                DataType = (DataType)Enum.Parse(typeof(DataType), Data["data_type"], true);
+            }
+            else
+            {
+                DataType = DataType.Unknown;
+            }
+
             Content = Data["content"];
             UniqId = Data["uniq_id"];
         }

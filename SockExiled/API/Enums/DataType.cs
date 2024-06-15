@@ -4,5 +4,14 @@
     ConnectionData,
     EventUpdateRequestData,
     RequestData,
-    Unknown
+    UpdatePluginData,
+    Unknown,
+    UpdatePlayerData,
+    UpdateRoomData,
+    UpdateItemData,
+    UpdatePickupData,
+    UpdateServerData,
+    TryGetPlayer,
+    TryGetItem,
+    TryGetPickup
 }
