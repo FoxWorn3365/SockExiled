@@ -19,15 +19,23 @@ namespace SockExiled.API.Features.NET
         /// </summary>
         public uint? Receiver { get; }
 
-        public MessageType MessageType { get; }
+        /// <summary>
+        /// The "status code" of the message.
+        /// Every message with a different purpouse has a different code.
+        /// </summary>
+        public int Code { get; }
 
-        public DataType DataType { get; set; }
-
+        /// <summary>
+        /// The content of the message as a string
+        /// </summary>
         public string Content { get; }
 
+        /// <summary>
+        /// The uniqid
+        /// </summary>
         public string UniqId { get; }
 
-        public RawSocketMessage(uint sender, uint? receiver, MessageType messageType, string content, string uniqId)
+        public RawSocketMessage(uint sender, uint? receiver, string content, int code, string uniqId = null)
         {
             Sender = sender;
             Receiver = receiver;
@@ -35,14 +43,9 @@ namespace SockExiled.API.Features.NET
             {
                 Receiver = 0;
             }
-            MessageType = messageType;
             Content = content;
-            UniqId = uniqId; 
-        }
-
-        public RawSocketMessage(uint sender, uint? receiver, MessageType messageType, string content, string uniqId, DataType dataType) : this(sender, receiver, messageType, content, uniqId)
-        {
-            DataType = dataType;
+            UniqId = uniqId ?? Guid.NewGuid().ToString(); 
+            Code = code;
         }
 
         public RawSocketMessage(string json)
@@ -60,17 +63,7 @@ namespace SockExiled.API.Features.NET
                 Receiver = uint.Parse(Data["receiver"]);
             }
 
-            MessageType = (MessageType)Enum.Parse(typeof(MessageType), Data["message_type"]);
-
-            if (Data.ContainsKey("data_type"))
-            {
-                DataType = (DataType)Enum.Parse(typeof(DataType), Data["data_type"], true);
-            }
-            else
-            {
-                DataType = DataType.Unknown;
-            }
-
+            Code = int.Parse(Data["code"]);
             Content = Data["content"];
             UniqId = Data["uniq_id"];
         }
@@ -83,7 +76,7 @@ namespace SockExiled.API.Features.NET
 
         public static bool Validate(Dictionary<string, string> data)
         {
-            return data.ContainsKey("sender") && data.ContainsKey("message_type") && data.ContainsKey("content") && data.ContainsKey("uniq_id");
+            return data.ContainsKey("sender") && data.ContainsKey("code") && data.ContainsKey("content") && data.ContainsKey("uniq_id");
         }
     }
 }

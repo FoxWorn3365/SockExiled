@@ -13,6 +13,10 @@ namespace SockExiled
 
         public bool Debug { get; set; } = false;
 
+        public string Ip { get; set; } = "127.0.0.1";
+
+        public int Port { get; set; } = 7778;
+
         public List<string> Keys { get; set; } = new();
     }
 }

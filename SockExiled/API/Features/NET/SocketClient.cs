@@ -60,7 +60,9 @@ namespace SockExiled.API.Features.NET
                 {
                     RawSocketMessage Message = new(ReadBuffer);
                     Log.Info("Successfully parsed message from ReadBuffer!");
-                    Server.HandleMessage(Message.SocketMessage(), this);
+                    Task.Run(() => {
+                        Server.HandleMessage(Message.SocketMessage(), this);
+                    });
                 }
                 catch (Exception e)
                 {
@@ -85,13 +87,13 @@ namespace SockExiled.API.Features.NET
         public void Send(SocketMessage message) => Send(message as RawSocketMessage);
 
         #nullable enable
-        public RawSocketMessage BuildMessage(Dictionary<string, string> data, MessageType type, string? uniqId) => new(Server.Id, Id, type, JsonConvert.SerializeObject(data), uniqId ?? Guid.NewGuid().ToString());
+        public RawSocketMessage BuildMessage(Dictionary<string, string> data, int code, string? uniqId) => new(Server.Id, Id, JsonConvert.SerializeObject(data), code, uniqId ?? Guid.NewGuid().ToString());
 
-        public RawSocketMessage BuildMessage(string data, MessageType type, string? uniqId) => new(Server.Id, Id, type, data, uniqId ?? Guid.NewGuid().ToString());
+        public RawSocketMessage BuildMessage(string data, int code, string? uniqId) => new(Server.Id, Id, data, code, uniqId ?? Guid.NewGuid().ToString());
 
-        public void Send(Dictionary<string, string> data, MessageType type, string? uniqId) => Send(BuildMessage(data, type, uniqId));
+        public void Send(Dictionary<string, string> data, int code, string? uniqId) => Send(BuildMessage(data, code, uniqId));
 
-        public void Send(string data, MessageType type, string? uniqid) => Send(BuildMessage(data, type, uniqid));
+        public void Send(string data, int code, string? uniqid) => Send(BuildMessage(data, code, uniqid));
         // Remember to disable the nullable if you add more methods, ok fox?
 
         #nullable disable

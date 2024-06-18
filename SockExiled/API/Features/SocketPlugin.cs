@@ -1,7 +1,7 @@
 ﻿using Exiled.API.Features;
-using Exiled.Events.Features;
 using Newtonsoft.Json;
 using SockExiled.API.Features.NET;
+using SockExiled.API.Features.NET.Serializer.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -136,13 +136,22 @@ namespace SockExiled.API.Features
         // From less to high
         public static HashSet<SocketPlugin> OrderByPriority() => Plugins.OrderBy(x => x.Priority).ToHashSet();
 
+        public static void BroadcastEvent(Event ev)
+        {
+            Log.Debug($"Proposed the event {ev.Name} to every connected plugin...");
+
+            foreach (SocketPlugin Plugin in Plugins)
+            {
+                Plugin.HandleEvent(ev);
+            }
+        }
+
         internal void HandleEvent(Event ev)
         {
-            string Name = ev.GetType().Name;
-
-            if (SubscribedEvents.Contains(Name))
+            if (SubscribedEvents.Contains(ev.Name))
             {
-
+                // Send the event
+                SocketClient.Send(new RawSocketMessage(0, SocketClient.Id, ev.Encode(), 0xe200));
             }
         }
 

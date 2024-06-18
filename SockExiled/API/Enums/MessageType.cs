@@ -1,5 +1,6 @@
 ﻿internal enum MessageType
 {
+    Unknown = -1,
     Connection,
     Ping,
     Request,
@@ -8,5 +9,5 @@
     ServerEvent,
     ServerRequest,
     ClientEventResponse,
-    RequestEdit
+    RequestEdit,
 }

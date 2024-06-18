@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PlayerEvent = Exiled.Events.Handlers.Player;
 
 namespace SockExiled
 {
@@ -23,15 +24,21 @@ namespace SockExiled
 
         public override PluginPriority Priority => PluginPriority.High;
 
-        public static Plugin Instance;
+        internal static Plugin Instance;
 
-        public static SocketServer Server;
+        internal Handler Handler;
+
+        internal static SocketServer Server;
 
         public override void OnEnabled()
         {
             Instance = this;
+            Handler = new();
 
-            Server = new(7778);
+            Server = new(Config.Port);
+
+            PlayerEvent.Spawning += Handler.Event;
+            PlayerEvent.Spawned += Handler.Event;
 
 
             base.OnEnabled();

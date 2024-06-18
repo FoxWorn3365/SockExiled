@@ -1,11 +1,11 @@
 ﻿internal enum DataType
 {
+    Unknown = -1,
     PluginData,
     ConnectionData,
     EventUpdateRequestData,
     RequestData,
     UpdatePluginData,
-    Unknown,
     UpdatePlayerData,
     UpdateRoomData,
     UpdateItemData,
@@ -13,5 +13,6 @@
     UpdateServerData,
     TryGetPlayer,
     TryGetItem,
-    TryGetPickup
+    TryGetPickup,
+    TryGetServer
 }

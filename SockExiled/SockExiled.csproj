@@ -272,13 +272,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Database.cs" />
     <Compile Include="API\Enums\DataType.cs" />
+    <Compile Include="API\Enums\EventType.cs" />
     <Compile Include="API\Enums\MessageType.cs" />
     <Compile Include="API\Enums\SocketSatus.cs" />
     <Compile Include="API\Features\Editor.cs" />
     <Compile Include="API\Features\NET\AsyncEventHandler.cs" />
-    <Compile Include="API\Features\NET\Communication\SmartPing.cs" />
     <Compile Include="API\Features\NET\RawSocketMessage.cs" />
+    <Compile Include="API\Features\NET\Serializer\Elements\Event.cs" />
     <Compile Include="API\Features\NET\Serializer\Serialized.cs" />
     <Compile Include="API\Features\NET\Serializer\Serializer.cs" />
     <Compile Include="API\Features\NET\SocketClient.cs" />
@@ -288,7 +290,9 @@
     <Compile Include="API\Storage.cs" />
     <Compile Include="API\Utilities\JsonParser.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Handler.cs" />
     <Compile Include="Extension\ClientExtension.cs" />
+    <Compile Include="Extension\DictionaryExtension.cs" />
     <Compile Include="Extension\ObjectExtension.cs" />
     <Compile Include="Extension\ReflectionExtension.cs" />
     <Compile Include="Extension\TypeExtension.cs" />

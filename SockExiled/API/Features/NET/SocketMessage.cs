@@ -13,7 +13,7 @@ namespace SockExiled.API.Features.NET
 
         public bool SentFromServer { get; } = false;
 
-        public SocketMessage(uint sender, uint? receiver, string content, MessageType messageType, string? uniqId = null) : base(sender, receiver, messageType, content, uniqId ?? Guid.NewGuid().ToString())
+        public SocketMessage(uint sender, uint? receiver, string content, int code, string? uniqId = null) : base(sender, receiver, content, code, uniqId ?? Guid.NewGuid().ToString())
         {
             RawContent = base.Content;
             Content = null;
@@ -29,7 +29,7 @@ namespace SockExiled.API.Features.NET
             }
         }
 
-        public SocketMessage(uint sender, uint? receiver, Dictionary<string, string> content, MessageType messageType, string? uniqId = null) : base(sender, receiver, messageType, JsonConvert.SerializeObject(content), uniqId ?? Guid.NewGuid().ToString())
+        public SocketMessage(uint sender, uint? receiver, Dictionary<string, string> content, int code, string? uniqId = null) : base(sender, receiver, JsonConvert.SerializeObject(content), code, uniqId ?? Guid.NewGuid().ToString())
         {
             RawContent = JsonConvert.SerializeObject(content);
             Content = content;
@@ -40,7 +40,7 @@ namespace SockExiled.API.Features.NET
             }
         }
 
-        public SocketMessage(RawSocketMessage raw) : base(raw.Sender, raw.Receiver, raw.MessageType, raw.Content, raw.UniqId, raw.DataType)
+        public SocketMessage(RawSocketMessage raw) : base(raw.Sender, raw.Receiver, raw.Content, raw.Code, raw.UniqId)
         {
             RawContent = raw.Content;
             Content = null;
