@@ -8,6 +8,7 @@ using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using SockExiled.API;
 using System.Linq;
+using Exiled.API.Features.Items;
 
 namespace SockExiled.Extension
 {
@@ -43,35 +44,37 @@ namespace SockExiled.Extension
             client.Send(new RawSocketMessage(0, client.Id, null, 0x83, uniqId ?? Guid.NewGuid().ToString()));
         }
 
-        public static void TrySendSchemaPlayer(this SocketClient client, uint id, string uniqId = null)
+        //
+        // ==================================
+        //           SERIALIZATION
+        // ==================================
+        //
+
+        // SERVER
+
+        public static void TrySendServer(this SocketClient client, string uniqId = null)
         {
-            Log.Debug($"Almost here with uint {id}");
             try
             {
-                Player Player = Player.Get((int)id);
-                if (Player is not null)
+                Log.Debug("Received element");
+                string Data = JsonConvert.SerializeObject(Serializer.SerializeElement(typeof(Server), false).ToObject(), new JsonSerializerSettings()
                 {
-                    Log.Debug("Nahh not null");
-                    string Data = JsonConvert.SerializeObject(Serializer.SerializeElement(Player), new JsonSerializerSettings()
+                    Error = delegate (object sender, ErrorEventArgs args)
                     {
-                        Error = delegate(object sender, ErrorEventArgs args) 
-                        {
-                            Log.Error($"Error while parsing member {args.ErrorContext.Member} ({args.ErrorContext.Member.GetType().Name}) {args.ErrorContext.OriginalObject.GetType().Name}: {args.ErrorContext.Error.Source} {args.ErrorContext.Error.Message} - {args.ErrorContext.Error.Data} (Handled: {args.ErrorContext.Handled})");
-                        }
-                    });
-                    Log.Debug("Received data!");
-                    client.Send(new RawSocketMessage(0, client.Id, Data, 0x30f, uniqId));
-                }
-                else
-                {
-                    client.Send(new RawSocketMessage(0, client.Id, "not found", 0x30e, uniqId));
-                }
+                        Log.Error($"Error while parsing member {args.ErrorContext.Member} ({args.ErrorContext.Member.GetType().Name}) {args.ErrorContext.OriginalObject.GetType().Name}: {args.ErrorContext.Error.Source} {args.ErrorContext.Error.Message} - {args.ErrorContext.Error.Data} (Handled: {args.ErrorContext.Handled})");
+                    }
+                });
+                Log.Debug("Received data!");
+                client.Send(new RawSocketMessage(0, client.Id, Data, 0x33, uniqId));
             }
             catch (Exception e)
             {
                 Log.Error($"({e.GetType().Name}) Error while parsing player: {e.Message} - {e.InnerException.Message}");
+                client.Send(new RawSocketMessage(0, client.Id, "error while fetching server", 0x33e, uniqId));
             }
         }
+
+        // PLAYERS
 
         public static void TrySendPlayer(this SocketClient client, uint id, string uniqId = null)
         {
@@ -101,51 +104,6 @@ namespace SockExiled.Extension
             {
                 Log.Error($"({e.GetType().Name}) Error while parsing player: {e.Message} - {e.InnerException.Message}");
             }
-
-        }
-
-        public static void TrySendSchemaServer(this SocketClient client, string uniqId = null)
-        {
-            try
-            {
-                Log.Debug("Received element");
-                string Data = JsonConvert.SerializeObject(Serializer.SerializeElement(typeof(Server), false), new JsonSerializerSettings()
-                {
-                    Error = delegate (object sender, ErrorEventArgs args)
-                    {
-                        Log.Error($"Error while parsing member {args.ErrorContext.Member} ({args.ErrorContext.Member.GetType().Name}) {args.ErrorContext.OriginalObject.GetType().Name}: {args.ErrorContext.Error.Source} {args.ErrorContext.Error.Message} - {args.ErrorContext.Error.Data} (Handled: {args.ErrorContext.Handled})");
-                    }
-                });
-                Log.Debug("Received data!");
-                client.Send(new RawSocketMessage(0, client.Id, Data, 0x33f, uniqId));
-            }
-            catch (Exception e)
-            {
-                Log.Error($"({e.GetType().Name}) Error while parsing player: {e.Message} - {e.InnerException.Message}");
-                client.Send(new RawSocketMessage(0, client.Id, "error while fetching server", 0x33e, uniqId));
-            }
-        }
-
-        public static void TrySendServer(this SocketClient client, string uniqId = null)
-        {
-            try
-            {
-                Log.Debug("Received element");
-                string Data = JsonConvert.SerializeObject(Serializer.SerializeElement(typeof(Server), false).ToObject(), new JsonSerializerSettings()
-                {
-                    Error = delegate (object sender, ErrorEventArgs args)
-                    {
-                        Log.Error($"Error while parsing member {args.ErrorContext.Member} ({args.ErrorContext.Member.GetType().Name}) {args.ErrorContext.OriginalObject.GetType().Name}: {args.ErrorContext.Error.Source} {args.ErrorContext.Error.Message} - {args.ErrorContext.Error.Data} (Handled: {args.ErrorContext.Handled})");
-                    }
-                });
-                Log.Debug("Received data!");
-                client.Send(new RawSocketMessage(0, client.Id, Data, 0x33, uniqId));
-            }
-            catch (Exception e)
-            {
-                Log.Error($"({e.GetType().Name}) Error while parsing player: {e.Message} - {e.InnerException.Message}");
-                client.Send(new RawSocketMessage(0, client.Id, "error while fetching server", 0x33e, uniqId));
-            }
         }
 
         public static void TrySendPlayerList(this SocketClient client, string uniqId = null)
@@ -158,34 +116,6 @@ namespace SockExiled.Extension
             }
 
             client.Send(new RawSocketMessage(0, client.Id, JsonConvert.SerializeObject(Ids), 0x34, uniqId));
-        }
-
-        public static void TrySendChunkedSchemaPlayerList(this SocketClient client, string uniqId = null)
-        {
-            List<Dictionary<string, Serialized>> Players = new();
-
-            try
-            {
-                foreach (Player Player in Player.List)
-                {
-                    Players.Add(Serializer.SerializeElement(Player));
-                }
-
-                string Data = JsonConvert.SerializeObject(Players, new JsonSerializerSettings()
-                {
-                    Error = delegate (object sender, ErrorEventArgs args)
-                    {
-                        Log.Error($"Error while parsing member {args.ErrorContext.Member} ({args.ErrorContext.Member.GetType().Name}) {args.ErrorContext.OriginalObject.GetType().Name}: {args.ErrorContext.Error.Source} {args.ErrorContext.Error.Message} - {args.ErrorContext.Error.Data} (Handled: {args.ErrorContext.Handled})");
-                    }
-                });
-
-                client.Send(new RawSocketMessage(0, client.Id, Data, 0x34cf, uniqId));
-            }
-            catch (Exception e)
-            {
-                Log.Error($"({e.GetType().Name}) Error while parsing player list: {e.Message} - {e.InnerException.Message}");
-                client.Send(new RawSocketMessage(0, client.Id, "error while fetching server", 0x34cfe, uniqId));
-            }
         }
 
         public static void TrySendChunkedPlayerList(this SocketClient client, string uniqId = null)
@@ -223,18 +153,17 @@ namespace SockExiled.Extension
             
             if (Database.CachedPlayers.ContainsKey(Player.Id))
             {
-                Dictionary<string, object> Cached = Serialized.Diff(Database.CachedPlayers[Player.Id]);
+                Dictionary<string, object> Cached = Serialized.Diff(Database.CachedPlayers[Player.Id], false);
 
                 if (Cached == Serialized)
                 {
                     // Failed!
-                    Database.CachedPlayers[Player.Id] = Serialized;
+                    Database.CachedPlayers[Player.Id] = Serialized; 
+                    Serialized.Add("Partial", false);
                     return Serialized;
                 }
 
-                Enumerable.Count(Player.CurrentSpectatingPlayers);
-
-                Cached.Add("Cached", true);
+                Cached.Add("Partial", true);
                 Cached.Add("Id", Player.Id);
                 Database.CachedPlayers[Player.Id] = Serialized;
                 Log.Info($"Took {Math.Round((float)(DateTimeOffset.Now.ToUnixTimeMilliseconds() / Start), 2)}ms to encode the message");
@@ -243,10 +172,198 @@ namespace SockExiled.Extension
 
             Database.CachedPlayers[Player.Id] = Serialized;
 
-            Serialized.Add("cached", false);
+            Serialized.Add("Partial", false);
 
             Log.Info($"Took {Math.Round((float)(DateTimeOffset.Now.ToUnixTimeMilliseconds() / Start), 2)}ms to encode the message");
             return Serialized;
+        }
+
+        // ITEMS
+
+        public static void TrySendItem(this SocketClient client, int id, string uniqId = null)
+        {
+            Log.Debug($"Almost here with uint {id}");
+            try
+            {
+                Item Item = Item.Get((ushort)id);
+
+                if (Item is not null)
+                {
+                    Log.Debug("Nahh not null");
+                    string Data = JsonConvert.SerializeObject(CorrectItem(Item), new JsonSerializerSettings()
+                    {
+                        Error = delegate (object sender, ErrorEventArgs args)
+                        {
+                            Log.Error($"Error while parsing member {args.ErrorContext.Member} ({args.ErrorContext.Member.GetType().Name}) {args.ErrorContext.OriginalObject.GetType().Name}: {args.ErrorContext.Error.Source} {args.ErrorContext.Error.Message} - {args.ErrorContext.Error.Data} (Handled: {args.ErrorContext.Handled})");
+                        }
+                    });
+                    Log.Debug("Received data!");
+                    client.Send(new RawSocketMessage(0, client.Id, Data, 0x31, uniqId));
+                }
+                else
+                {
+                    client.Send(new RawSocketMessage(0, client.Id, "not found", 0x31e, uniqId));
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"({e.GetType().Name}) Error while parsing player: {e.Message} - {e.InnerException.Message}");
+            }
+        }
+
+        internal static Dictionary<string, object> CorrectItem(Item Item)
+        {
+            long Start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            Dictionary<string, object> Serialized = Serializer.SerializeElement(Item).ToObject();
+
+            if (Database.CachedPlayers.ContainsKey(Item.Serial))
+            {
+                Dictionary<string, object> Cached = Serialized.Diff(Database.CachedPlayers[Item.Serial]);
+
+                if (Cached == Serialized)
+                {
+                    // Failed!
+                    Database.CachedPlayers[Item.Serial] = Serialized;
+                    Serialized.Add("Partial", false);
+                    return Serialized;
+                }
+
+                Cached.Add("Partial", true);
+                Cached.Add("Id", Item.Serial);
+                Database.CachedPlayers[Item.Serial] = Serialized;
+
+                Log.Info($"Took {Math.Round((float)(DateTimeOffset.Now.ToUnixTimeMilliseconds() / Start), 2)}ms to encode the message");
+
+                return Cached;
+            }
+
+            Database.CachedPlayers[Item.Serial] = Serialized;
+
+            Serialized.Add("Partial", false);
+
+            Log.Info($"Took {Math.Round((float)(DateTimeOffset.Now.ToUnixTimeMilliseconds() / Start), 2)}ms to encode the message");
+            return Serialized;
+        }
+
+        //
+        // ==================================
+        //             SCHEMAs
+        // ==================================
+        //
+
+        // SERVER
+
+        public static void TrySendSchemaServer(this SocketClient client, string uniqId = null)
+        {
+            try
+            {
+                Log.Debug("Received element");
+                string Data = JsonConvert.SerializeObject(Serializer.SerializeElement(typeof(Server), false), new JsonSerializerSettings()
+                {
+                    Error = delegate (object sender, ErrorEventArgs args)
+                    {
+                        Log.Error($"Error while parsing member {args.ErrorContext.Member} ({args.ErrorContext.Member.GetType().Name}) {args.ErrorContext.OriginalObject.GetType().Name}: {args.ErrorContext.Error.Source} {args.ErrorContext.Error.Message} - {args.ErrorContext.Error.Data} (Handled: {args.ErrorContext.Handled})");
+                    }
+                });
+                Log.Debug("Received data!");
+                client.Send(new RawSocketMessage(0, client.Id, Data, 0x33f, uniqId));
+            }
+            catch (Exception e)
+            {
+                Log.Error($"({e.GetType().Name}) Error while parsing player: {e.Message} - {e.InnerException.Message}");
+                client.Send(new RawSocketMessage(0, client.Id, "error while fetching server", 0x33e, uniqId));
+            }
+        }
+
+        // PLAYERS
+
+        public static void TrySendChunkedSchemaPlayerList(this SocketClient client, string uniqId = null)
+        {
+            List<Dictionary<string, Serialized>> Players = new();
+
+            try
+            {
+                foreach (Player Player in Player.List)
+                {
+                    Players.Add(Serializer.SerializeElement(Player));
+                }
+
+                string Data = JsonConvert.SerializeObject(Players, new JsonSerializerSettings()
+                {
+                    Error = delegate (object sender, ErrorEventArgs args)
+                    {
+                        Log.Error($"Error while parsing member {args.ErrorContext.Member} ({args.ErrorContext.Member.GetType().Name}) {args.ErrorContext.OriginalObject.GetType().Name}: {args.ErrorContext.Error.Source} {args.ErrorContext.Error.Message} - {args.ErrorContext.Error.Data} (Handled: {args.ErrorContext.Handled})");
+                    }
+                });
+
+                client.Send(new RawSocketMessage(0, client.Id, Data, 0x34cf, uniqId));
+            }
+            catch (Exception e)
+            {
+                Log.Error($"({e.GetType().Name}) Error while parsing player list: {e.Message} - {e.InnerException.Message}");
+                client.Send(new RawSocketMessage(0, client.Id, "error while fetching server", 0x34cfe, uniqId));
+            }
+        }
+        public static void TrySendSchemaPlayer(this SocketClient client, uint id, string uniqId = null)
+        {
+            Log.Debug($"Almost here with uint {id}");
+            try
+            {
+                Player Player = Player.Get((int)id);
+                if (Player is not null)
+                {
+                    Log.Debug("Nahh not null");
+                    string Data = JsonConvert.SerializeObject(Serializer.SerializeElement(Player), new JsonSerializerSettings()
+                    {
+                        Error = delegate (object sender, ErrorEventArgs args)
+                        {
+                            Log.Error($"Error while parsing member {args.ErrorContext.Member} ({args.ErrorContext.Member.GetType().Name}) {args.ErrorContext.OriginalObject.GetType().Name}: {args.ErrorContext.Error.Source} {args.ErrorContext.Error.Message} - {args.ErrorContext.Error.Data} (Handled: {args.ErrorContext.Handled})");
+                        }
+                    });
+                    Log.Debug("Received data!");
+                    client.Send(new RawSocketMessage(0, client.Id, Data, 0x30f, uniqId));
+                }
+                else
+                {
+                    client.Send(new RawSocketMessage(0, client.Id, "not found", 0x30e, uniqId));
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"({e.GetType().Name}) Error while parsing player: {e.Message} - {e.InnerException.Message}");
+            }
+        }
+
+        // ITEMS
+
+        public static void TrySendSchemaItem(this SocketClient client, uint id, string uniqId = null)
+        {
+            Log.Debug($"Almost here with uint {id}");
+            try
+            {
+                Item Item = Item.Get((ushort)id);
+                if (Item is not null)
+                {
+                    Log.Debug("Nahh not null");
+                    string Data = JsonConvert.SerializeObject(Serializer.SerializeElement(Item), new JsonSerializerSettings()
+                    {
+                        Error = delegate (object sender, ErrorEventArgs args)
+                        {
+                            Log.Error($"Error while parsing member {args.ErrorContext.Member} ({args.ErrorContext.Member.GetType().Name}) {args.ErrorContext.OriginalObject.GetType().Name}: {args.ErrorContext.Error.Source} {args.ErrorContext.Error.Message} - {args.ErrorContext.Error.Data} (Handled: {args.ErrorContext.Handled})");
+                        }
+                    });
+                    Log.Debug("Received data!");
+                    client.Send(new RawSocketMessage(0, client.Id, Data, 0x31f, uniqId));
+                }
+                else
+                {
+                    client.Send(new RawSocketMessage(0, client.Id, "not found", 0x31e, uniqId));
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"({e.GetType().Name}) Error while parsing player: {e.Message} - {e.InnerException.Message}");
+            }
         }
     }
 }

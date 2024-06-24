@@ -1,6 +1,6 @@
 ﻿using Exiled.API.Features;
-using MEC;
 using Newtonsoft.Json;
+using SockExiled.API.Features.NET.Serializer.Elements;
 using SockExiled.Extension;
 using System;
 using System.Collections.Generic;
@@ -38,7 +38,15 @@ namespace SockExiled.API.Features.NET
             Port = port;
             Clients = new();
 
-            IPEndPoint = new(Dns.GetHostEntry(IPAddress.Parse(Plugin.Instance.Config.Ip)).AddressList[0], port);
+            if (Plugin.Instance.Config.Ip is "0.0.0.0")
+            {
+                IPEndPoint = new(Dns.GetHostEntry(Dns.GetHostName()).AddressList[0], port);
+            } 
+            else
+            {
+                IPEndPoint = new(Dns.GetHostEntry(IPAddress.Parse(Plugin.Instance.Config.Ip)).AddressList[0], port);
+            }
+
             Socket = new(IPEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             Socket.Bind(IPEndPoint);
             Socket.Listen(5);
@@ -55,7 +63,7 @@ namespace SockExiled.API.Features.NET
                 Socket ClientSocket = Socket.Accept();
                 SocketClient Client = new(this, (uint)Clients.Count() + 2, ClientSocket, SocketStatus.Connecting);
                 Clients.Add(Client);
-                Client.Send(BuildMessage("welcome", 0x00, Client.Id));
+                Client.Send(BuildMessage("Welcome!", 0x00, Client.Id));
             }
         }
 
@@ -65,13 +73,18 @@ namespace SockExiled.API.Features.NET
             {
                 foreach (SocketClient Client in Clients)
                 {
+                    if (!Client.Socket.Connected)
+                    {
+                        Client.IsActive = false;
+                    }
+
                     if (!Client.IsActive)
                     {
                         Clients.Remove(Client);
                     }
                 }
 
-                await Task.Delay(RefreshRate * 1000);
+                await Task.Delay(RefreshRate * 5000);
             }
         }
 
@@ -119,7 +132,7 @@ namespace SockExiled.API.Features.NET
             } 
             else if (sender.Status is SocketStatus.Connected)
             {
-                if (message.Content is not null && message.Code is 0x40 && AsyncEventHandler.List.Where(ev => ev.Id == message.UniqId).Count() > 0 && SocketPlugin.TryGetSocketPlugin(sender, out SocketPlugin Plugin))
+                if (message.Content is not null && message.Code is 0x40 && AsyncEventHandler.List.Where(ev => ev.Id == message.UniqId).Count() > 0 && SocketPlugin.TryGet(sender, out SocketPlugin Plugin))
                 {
                     AsyncEventHandler.List.Where(ev => ev.Id == message.UniqId).First().CollectPoolPiece(Plugin, RawMessage.Content);
                 }
@@ -154,6 +167,28 @@ namespace SockExiled.API.Features.NET
                 else if (message.Code is 0x24cf) 
                 {
                     sender.TrySendChunkedSchemaPlayerList(message.UniqId);
+                }
+                else if (message.Code is 0xe200a && RawMessage.Content is not null)
+                {
+                    // Is a message for the server, no need to reply!
+                    try
+                    {
+                        Event Event = Event.Decode(RawMessage.Content);
+                        
+                        if (EventBucket.TrySearch(Event, out EventBucket Bucket))
+                        {
+                            Bucket.Append(SocketPlugin.Get(sender), Event);
+                        }
+                    }
+                    catch (Exception) { }
+                }
+                else if (message.Code is 0x21 && message.Content is not null && message.Content.ContainsKey("item"))
+                {
+                    sender.TrySendItem(int.Parse(message.Content["item"]), message.UniqId);
+                }
+                else if (message.Code is 0x21f && message.Content is not null && message.Content.ContainsKey("item"))
+                {
+                    sender.TrySendSchemaItem(uint.Parse(message.Content["item"]), message.UniqId);
                 }
             }
         }

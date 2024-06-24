@@ -49,11 +49,8 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\..\Downloads\Master\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
     <Reference Include="Mirror">
-      <HintPath>..\..\..\..\Downloads\references\references\Mirror.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\Mirror.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -64,211 +61,211 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AccessibilityModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.AccessibilityModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.AccessibilityModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.AIModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.AIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AndroidJNIModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.AndroidJNIModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.AndroidJNIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ARModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.ARModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.ARModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.AssetBundleModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.AudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClothModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.ClothModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.ClothModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClusterInputModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.ClusterInputModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.ClusterInputModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClusterRendererModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.ClusterRendererModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.ClusterRendererModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CrashReportingModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.CrashReportingModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.CrashReportingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.DirectorModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.DirectorModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.DirectorModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.DSPGraphModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.DSPGraphModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.DSPGraphModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GameCenterModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.GameCenterModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.GameCenterModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GIModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.GIModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.GIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GridModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.GridModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.GridModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.HotReloadModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.HotReloadModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.HotReloadModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.InputLegacyModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.InputLegacyModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.InputModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.InputModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.JSONSerializeModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.JSONSerializeModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.JSONSerializeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.LocalizationModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.LocalizationModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.LocalizationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.NVIDIAModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.NVIDIAModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.NVIDIAModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.ParticleSystemModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PerformanceReportingModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.PerformanceReportingModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.PerformanceReportingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Physics2DModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.Physics2DModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.Physics2DModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ProfilerModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.ProfilerModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.ProfilerModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ScreenCaptureModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.ScreenCaptureModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.ScreenCaptureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SharedInternalsModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.SharedInternalsModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.SharedInternalsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpriteMaskModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.SpriteMaskModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.SpriteMaskModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpriteShapeModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.SpriteShapeModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.SpriteShapeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.StreamingModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.StreamingModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.StreamingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SubstanceModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.SubstanceModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.SubstanceModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SubsystemsModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.SubsystemsModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.SubsystemsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TerrainModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.TerrainModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.TerrainModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TerrainPhysicsModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.TerrainPhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextCoreFontEngineModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextCoreTextEngineModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TilemapModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.TilemapModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.TilemapModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TLSModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.TLSModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.TLSModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIElementsModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UIElementsModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UIElementsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIElementsNativeModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UIElementsNativeModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UIElementsNativeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UmbraModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UmbraModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UmbraModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UNETModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UNETModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UNETModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityAnalyticsCommonModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UnityAnalyticsCommonModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UnityAnalyticsCommonModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityAnalyticsModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UnityAnalyticsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityConnectModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UnityConnectModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UnityConnectModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityCurlModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UnityCurlModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UnityCurlModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityTestProtocolModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UnityTestProtocolModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UnityTestProtocolModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestAudioModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UnityWebRequestModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestTextureModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestWWWModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VehiclesModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.VehiclesModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.VehiclesModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VFXModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.VFXModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.VFXModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VideoModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.VideoModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.VideoModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VirtualTexturingModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.VirtualTexturingModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.VirtualTexturingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VRModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.VRModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.VRModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.WindModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.WindModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.WindModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.XRModule">
-      <HintPath>..\..\..\..\Downloads\Master\UnityEngine.XRModule.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\EXILED_REF\References\UnityEngine.XRModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -279,6 +276,7 @@
     <Compile Include="API\Enums\SocketSatus.cs" />
     <Compile Include="API\Features\Editor.cs" />
     <Compile Include="API\Features\NET\AsyncEventHandler.cs" />
+    <Compile Include="API\Features\NET\EventBucket.cs" />
     <Compile Include="API\Features\NET\RawSocketMessage.cs" />
     <Compile Include="API\Features\NET\Serializer\Elements\Event.cs" />
     <Compile Include="API\Features\NET\Serializer\Serialized.cs" />

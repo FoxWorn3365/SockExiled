@@ -1,9 +1,9 @@
 ﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs.Interfaces;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using SockExiled.Extension;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -18,10 +18,14 @@ namespace SockExiled.API.Features.NET.Serializer.Elements
 
         public bool Nullable { get; }
 
-        public object Data { get; internal set; }
+        public Dictionary<string, object> Data { get; internal set; }
+
+        public string UniqId { get; }
 
         public Event(object main) 
         {
+            UniqId = Guid.NewGuid().ToString();
+
             Nullable = main is IDeniableEvent;
             
             if (main is IPlayerEvent)
@@ -83,10 +87,21 @@ namespace SockExiled.API.Features.NET.Serializer.Elements
                 }
             }
 
-            Log.Debug("Event partially created, going through reflection...");
+            Log.Debug($"Event '{main.GetType().Name}' partially created, going through reflection...");
 
             EncodeTypes(main);
         }
+
+        public Event(string name, EventType eventType, bool nullable, Dictionary<string, object> data)
+        {
+            Name = name;
+            EventType = eventType;
+            Nullable = nullable;
+            Data = data;
+            UniqId = Guid.NewGuid().ToString();
+        }
+
+        public Event(string name, EventType eventType, bool nullable = false) : this(name, eventType, nullable, new()) { }
 
         private void EncodeTypes(object main)
         {
@@ -116,6 +131,23 @@ namespace SockExiled.API.Features.NET.Serializer.Elements
             Data = Encoded;
         }
 
-        public string Encode() => JsonConvert.SerializeObject(this);
+        public string Encode() => JsonConvert.SerializeObject(this, new JsonSerializerSettings()
+        {
+            ContractResolver = new DefaultContractResolver()
+            {
+                NamingStrategy = new SnakeCaseNamingStrategy()
+            }
+        });
+
+        public static Event Decode(string message)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<Event>(message);
+            } 
+            catch (Exception) { }
+
+            return null;
+        }
     }
 }

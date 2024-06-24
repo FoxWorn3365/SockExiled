@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PlayerEvent = Exiled.Events.Handlers.Player;
+using MapEvent = Exiled.Events.Handlers.Map;
 
 namespace SockExiled
 {
@@ -37,9 +38,26 @@ namespace SockExiled
 
             Server = new(Config.Port);
 
+            // Player event
+            PlayerEvent.Verified += Handler.Event;
             PlayerEvent.Spawning += Handler.Event;
             PlayerEvent.Spawned += Handler.Event;
+            PlayerEvent.TriggeringTesla += Handler.Event;
 
+            // Map events
+            MapEvent.AnnouncingDecontamination += Handler.Event;
+            MapEvent.AnnouncingNtfEntrance += Handler.Event;
+            MapEvent.AnnouncingScpTermination += Handler.Event;
+            MapEvent.ChangedIntoGrenade += Handler.Event;
+            MapEvent.Decontaminating += Handler.Event;
+            MapEvent.ExplodingGrenade += Handler.Event;
+            MapEvent.Generated += Handler.MapGeneratedEvent;
+            MapEvent.GeneratorActivating += Handler.Event;
+            MapEvent.PickupDestroyed += Handler.Event;
+            MapEvent.PlacingBlood += Handler.Event;
+            MapEvent.PlacingBulletHole += Handler.Event;
+            MapEvent.SpawningTeamVehicle += Handler.Event;
+            MapEvent.TurningOffLights += Handler.Event;
 
             base.OnEnabled();
         }

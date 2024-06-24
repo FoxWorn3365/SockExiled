@@ -1,11 +1,7 @@
 ﻿using Exiled.API.Features;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using SockExiled.API.Features.NET.Serializer;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace SockExiled.Extension
 {
@@ -22,9 +18,9 @@ namespace SockExiled.Extension
             return Data;
         }
 
-        public static Dictionary<string, object> Diff(this Dictionary<string, object> dictionary, Dictionary<string, object> element)
+        public static Dictionary<string, object> Diff(this Dictionary<string, object> dictionary, Dictionary<string, object> element, bool stopIfCountIsWrong = true)
         {
-            if (dictionary.Count != element.Count)
+            if (dictionary.Count != element.Count && stopIfCountIsWrong)
             {
                 Log.Error($"Failed to 'Diff' two Dictionaries: expect same value, found {dictionary.Count} and {element.Count}");
                 return dictionary;
@@ -68,6 +64,18 @@ namespace SockExiled.Extension
 
             Log.Debug($"Returning diff with length: {Data.Count}");
             return Data;
+        }
+
+        public static void TryAdd<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue value)
+        {
+            if (dictionary.ContainsKey(key))
+            {
+                dictionary[key] = value;
+            }
+            else
+            {
+                dictionary.Add(key, value);
+            }
         }
     }
 }

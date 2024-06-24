@@ -22,6 +22,12 @@ namespace SockExiled.API.Features.NET.Serializer
                 if (Property.Name.Contains("AuthenticationToken"))
                     continue;
 
+                if (Property.Name.Contains("ActiveTime"))
+                    continue;
+
+                if (Property.Name.Contains("DeadTime"))
+                    continue;
+
                 if (Property.Name is "Role")
                 {
                     try

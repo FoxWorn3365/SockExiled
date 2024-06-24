@@ -9,5 +9,6 @@ namespace SockExiled.API
     internal class Database
     {
         public static Dictionary<int, Dictionary<string, object>> CachedPlayers = new();
+        public static Dictionary<int, Dictionary<string, object>> CachedItems = new();
     }
 }

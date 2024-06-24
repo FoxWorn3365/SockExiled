@@ -119,16 +119,16 @@ namespace SockExiled.API.Features
             return data.ContainsKey("id") && data.ContainsKey("name") && data.ContainsKey("prefix") && data.ContainsKey("author") && data.ContainsKey("version") && data.ContainsKey("subscribed_events");
         }
 
-        public static bool TryGetSocketPlugin(SocketClient client, out SocketPlugin plugin)
+        public static bool TryGet(SocketClient client, out SocketPlugin plugin)
         {
-            plugin = null;
-            if (Plugins.Where(pl => pl.SocketClient == client).Count() > 0)
-            {
-                plugin = Plugins.Where(pl => pl.SocketClient == client).First();
-                return true;
-            }
+            plugin = Plugins.Where(pl => pl.SocketClient == client).FirstOrDefault();
+            return plugin is not null;
+        }
 
-            return false;
+        public static SocketPlugin Get(SocketClient client) 
+        {
+            TryGet(client, out SocketPlugin plugin);
+            return plugin;
         }
 
         public static SocketPlugin GetHigherPriority() => Plugins.OrderBy(p => p.Priority).Last();
@@ -146,13 +146,16 @@ namespace SockExiled.API.Features
             }
         }
 
-        internal void HandleEvent(Event ev)
+        internal bool HandleEvent(Event ev)
         {
             if (SubscribedEvents.Contains(ev.Name))
             {
                 // Send the event
                 SocketClient.Send(new RawSocketMessage(0, SocketClient.Id, ev.Encode(), 0xe200));
+                return true;
             }
+
+            return false;
         }
 
         public void Destroy()

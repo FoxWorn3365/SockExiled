@@ -12,7 +12,7 @@ namespace SockExiled.API.Utilities
             Dictionary<string, string> Data = new();
 
             SnakeCaseNamingStrategy NamingStrategy = new();
-            foreach (PropertyInfo Property in  obj.GetType().GetProperties())
+            foreach (PropertyInfo Property in obj.GetType().GetProperties())
             {
                 Data.Add(NamingStrategy.GetPropertyName(Property.Name, false), (Property.GetValue(obj, null) ?? "error").ToString());
             }
