@@ -1,11 +1,8 @@
 ﻿using SockExiled.API.Features.NET.Serializer.Elements;
 using SockExiled.Extension;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using UnityEngine.Assertions.Must;
 
 namespace SockExiled.API.Features.NET
 {
@@ -19,28 +16,46 @@ namespace SockExiled.API.Features.NET
 
         public const int Tick = 5;
 
-        public const int Timeout = 1000;
+        public const int Timeout = 1250;
 
-        private int Counter = 0;
+        private int Counter { get; set; } = int.MinValue;
+
+        public bool Timeouted { get; private set; } = false;
+
+        private bool IsSecondHand { get; set; } = false;
 
         public bool IsCompleted { get; private set; } = false;
 
         private Task<Event> AsyncTask { get; set; }
 
-        public EventBucket(Event submitted)
+        public EventBucket(Event submitted, bool DoBroadcastEvents = true)
         {
             Submitted = submitted;
 
-            AsyncTask = Task.Run(TickAction);
+            if (!DoBroadcastEvents)
+            {
+                IsSecondHand = true;
+            }
 
             // Send async events with a task to interested elements
-            foreach (SocketPlugin Plugin in SocketPlugin.Plugins.Where(pl => pl.SubscribedEvents.Contains(Submitted.Name)))
+            foreach (SocketPlugin Plugin in SocketPlugin.Plugins.Where(pl => pl.SubscribedEvents.Contains(Submitted.Name) && pl.SocketClient.IsActive))
             {
                 Response.Add(Plugin, null);
-                Task.Run(() =>
+                if (DoBroadcastEvents)
                 {
-                    Plugin.HandleEvent(Submitted);
-                });
+                    Task.Run(() =>
+                    {
+                        Plugin.HandleEvent(Submitted);
+                    });
+                }
+            }
+
+            Counter = 0;
+            AsyncTask = Task.Run(TickAction);
+
+            if (Response.Count == 0)
+            {
+                IsCompleted = true;
             }
 
             List.Add(this);
@@ -70,13 +85,14 @@ namespace SockExiled.API.Features.NET
 
         public Event Execute()
         {
-            if (!IsCompleted) 
-                return null;
+            if (Response.Count() == 0)
+                return Submitted;
 
             if (AsyncTask is null)
                 return null;
 
             AsyncTask.Wait();
+
             return AsyncTask.Result;
         }
 
@@ -84,6 +100,12 @@ namespace SockExiled.API.Features.NET
         {
             while (!IsCompleted)
             {
+                if (Response.Count() == 0)
+                {
+                    IsCompleted = true;
+                    break;
+                }
+
                 if (Response.Where(kvp => kvp.Value is null).Count() == 0)
                 {
                     IsCompleted = true;
@@ -92,6 +114,7 @@ namespace SockExiled.API.Features.NET
 
                 if (Counter > Timeout)
                 {
+                    Timeouted = true;
                     break;
                 }
 
@@ -117,6 +140,7 @@ namespace SockExiled.API.Features.NET
             }
 
             List.Remove(this);
+
             return Submitted;
         }
     }

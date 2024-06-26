@@ -17,6 +17,8 @@ namespace SockExiled
 
         public int Port { get; set; } = 7778;
 
+        public int SyncTime { get; set; } = 5;
+
         public List<string> Keys { get; set; } = new();
     }
 }

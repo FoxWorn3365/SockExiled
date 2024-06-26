@@ -74,12 +74,13 @@ namespace SockExiled.API.Features.NET
 
         public bool Send(RawSocketMessage message)
         {
-            if (IsActive)
+            if (IsActive && Socket.Connected)
             {
                 Log.Info($"Socket {Id} active, sending message with uniqId {message.UniqId}");
                 Socket.Send(Encoding.UTF8.GetBytes($"{message.Encode()}<EoM>"));
                 return true;
             }
+
             Log.Error($"Socket {Id} is not active!");
             return false;
         }

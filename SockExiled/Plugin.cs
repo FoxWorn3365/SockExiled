@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PlayerEvent = Exiled.Events.Handlers.Player;
 using MapEvent = Exiled.Events.Handlers.Map;
+using SockExiled.API.Core;
 
 namespace SockExiled
 {
@@ -37,6 +38,9 @@ namespace SockExiled
             Handler = new();
 
             Server = new(Config.Port);
+
+            SyncManager.Init();
+            // TimeCache.Init();
 
             // Player event
             PlayerEvent.Verified += Handler.Event;

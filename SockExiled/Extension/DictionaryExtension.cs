@@ -57,7 +57,6 @@ namespace SockExiled.Extension
                         }
                     }
 
-                    Log.Debug($"Found uncongruent keys [{pair.Key}]: found {pair.Value} ({pair.Value.GetType().Name}) and {element[pair.Key]} ({element[pair.Key].GetType().Name})");
                     Data.Add(pair.Key, pair.Value);
                 }
             }
@@ -76,6 +75,20 @@ namespace SockExiled.Extension
             {
                 dictionary.Add(key, value);
             }
+        }
+
+        public static TValue ReGet<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key)
+        {
+            if (dictionary.ContainsKey(key))
+                return dictionary[key];
+
+            return default;
+        }
+
+        public static bool TryGet<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, out TValue value)
+        {
+            value = dictionary.ReGet(key);
+            return value != null;
         }
     }
 }

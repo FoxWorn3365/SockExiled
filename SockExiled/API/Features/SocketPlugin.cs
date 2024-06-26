@@ -148,7 +148,7 @@ namespace SockExiled.API.Features
 
         internal bool HandleEvent(Event ev)
         {
-            if (SubscribedEvents.Contains(ev.Name))
+            if (SubscribedEvents.Contains(ev.Name) && SocketClient.Status is SocketStatus.Connected)
             {
                 // Send the event
                 SocketClient.Send(new RawSocketMessage(0, SocketClient.Id, ev.Encode(), 0xe200));

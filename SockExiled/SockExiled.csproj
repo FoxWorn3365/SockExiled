@@ -269,7 +269,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\Database.cs" />
+    <Compile Include="API\Core\EventFlood.cs" />
+    <Compile Include="API\Core\ReferenceLoopDetector.cs" />
+    <Compile Include="API\Core\SyncManager.cs" />
+    <Compile Include="API\Core\TimeCache.cs" />
+    <Compile Include="API\Core\Utilities.cs" />
     <Compile Include="API\Enums\DataType.cs" />
     <Compile Include="API\Enums\EventType.cs" />
     <Compile Include="API\Enums\MessageType.cs" />
@@ -285,9 +289,12 @@
     <Compile Include="API\Features\NET\SocketMessage.cs" />
     <Compile Include="API\Features\NET\SocketServer.cs" />
     <Compile Include="API\Features\SocketPlugin.cs" />
-    <Compile Include="API\Storage.cs" />
+    <Compile Include="API\Storage\ItemStorage.cs" />
+    <Compile Include="API\Storage\PlayerStorage.cs" />
+    <Compile Include="API\Storage\Storage.cs" />
     <Compile Include="API\Utilities\JsonParser.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Extension\PlayerExtension.cs" />
     <Compile Include="Handler.cs" />
     <Compile Include="Extension\ClientExtension.cs" />
     <Compile Include="Extension\DictionaryExtension.cs" />

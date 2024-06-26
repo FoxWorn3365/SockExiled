@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SockExiled.API.Features.NET
@@ -38,6 +37,8 @@ namespace SockExiled.API.Features.NET
             Port = port;
             Clients = new();
 
+            Log.Info($"Starting listing sockets on {Plugin.Instance.Config.Ip}:{Plugin.Instance.Config.Port} ...");
+
             if (Plugin.Instance.Config.Ip is "0.0.0.0")
             {
                 IPEndPoint = new(Dns.GetHostEntry(Dns.GetHostName()).AddressList[0], port);
@@ -51,9 +52,10 @@ namespace SockExiled.API.Features.NET
             Socket.Bind(IPEndPoint);
             Socket.Listen(5);
 
+            Log.Info($"Started listing sockets on {Plugin.Instance.Config.Ip}:{Plugin.Instance.Config.Port}");
+
             // Async task handler
             AcceptTask = Task.Run(ConnectionHandler);
-            GarbageCollector = Task.Run(GarbageCollectorAction);
         }
 
         internal void ConnectionHandler()
@@ -67,24 +69,25 @@ namespace SockExiled.API.Features.NET
             }
         }
 
-        internal async void GarbageCollectorAction()
+        internal void GarbageCollectorAction()
         {
-            while (IsActive)
+            foreach (SocketClient Client in Clients)
             {
-                foreach (SocketClient Client in Clients)
+                if (!Client.Socket.Connected)
                 {
-                    if (!Client.Socket.Connected)
-                    {
-                        Client.IsActive = false;
-                    }
-
-                    if (!Client.IsActive)
-                    {
-                        Clients.Remove(Client);
-                    }
+                    Client.IsActive = false;
                 }
 
-                await Task.Delay(RefreshRate * 5000);
+                if (!Client.IsActive)
+                {
+                    // Check before for a SocketPlugin
+                    if (SocketPlugin.TryGet(Client, out SocketPlugin Plugin))
+                    {
+                        Plugin.Destroy();
+                    }
+
+                    Clients.Remove(Client);
+                }
             }
         }
 
@@ -173,11 +176,16 @@ namespace SockExiled.API.Features.NET
                     // Is a message for the server, no need to reply!
                     try
                     {
+                        Log.Error(RawMessage.Content);
                         Event Event = Event.Decode(RawMessage.Content);
                         
                         if (EventBucket.TrySearch(Event, out EventBucket Bucket))
                         {
                             Bucket.Append(SocketPlugin.Get(sender), Event);
+                        }
+                        else
+                        {
+                            Log.Error($"Failed to get a EventBucket for the event {Event.Name}.\nProbably the timeout went out!");
                         }
                     }
                     catch (Exception) { }

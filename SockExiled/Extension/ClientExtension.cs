@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using SockExiled.API;
 using System.Linq;
 using Exiled.API.Features.Items;
+using SockExiled.API.Core;
+using System.Threading;
+using Interactables.Interobjects.DoorUtils;
 
 namespace SockExiled.Extension
 {
@@ -146,38 +149,6 @@ namespace SockExiled.Extension
             }
         }
 
-        internal static Dictionary<string, object> CorrectPlayer(Player Player)
-        {
-            long Start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            Dictionary<string, object> Serialized = Serializer.SerializeElement(Player).ToObject();
-            
-            if (Database.CachedPlayers.ContainsKey(Player.Id))
-            {
-                Dictionary<string, object> Cached = Serialized.Diff(Database.CachedPlayers[Player.Id], false);
-
-                if (Cached == Serialized)
-                {
-                    // Failed!
-                    Database.CachedPlayers[Player.Id] = Serialized; 
-                    Serialized.Add("Partial", false);
-                    return Serialized;
-                }
-
-                Cached.Add("Partial", true);
-                Cached.Add("Id", Player.Id);
-                Database.CachedPlayers[Player.Id] = Serialized;
-                Log.Info($"Took {Math.Round((float)(DateTimeOffset.Now.ToUnixTimeMilliseconds() / Start), 2)}ms to encode the message");
-                return Cached;
-            }
-
-            Database.CachedPlayers[Player.Id] = Serialized;
-
-            Serialized.Add("Partial", false);
-
-            Log.Info($"Took {Math.Round((float)(DateTimeOffset.Now.ToUnixTimeMilliseconds() / Start), 2)}ms to encode the message");
-            return Serialized;
-        }
-
         // ITEMS
 
         public static void TrySendItem(this SocketClient client, int id, string uniqId = null)
@@ -211,39 +182,9 @@ namespace SockExiled.Extension
             }
         }
 
-        internal static Dictionary<string, object> CorrectItem(Item Item)
-        {
-            long Start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            Dictionary<string, object> Serialized = Serializer.SerializeElement(Item).ToObject();
+        internal static Dictionary<string, object> CorrectItem(Item item) => Utilities.CorrectItem(item);
 
-            if (Database.CachedPlayers.ContainsKey(Item.Serial))
-            {
-                Dictionary<string, object> Cached = Serialized.Diff(Database.CachedPlayers[Item.Serial]);
-
-                if (Cached == Serialized)
-                {
-                    // Failed!
-                    Database.CachedPlayers[Item.Serial] = Serialized;
-                    Serialized.Add("Partial", false);
-                    return Serialized;
-                }
-
-                Cached.Add("Partial", true);
-                Cached.Add("Id", Item.Serial);
-                Database.CachedPlayers[Item.Serial] = Serialized;
-
-                Log.Info($"Took {Math.Round((float)(DateTimeOffset.Now.ToUnixTimeMilliseconds() / Start), 2)}ms to encode the message");
-
-                return Cached;
-            }
-
-            Database.CachedPlayers[Item.Serial] = Serialized;
-
-            Serialized.Add("Partial", false);
-
-            Log.Info($"Took {Math.Round((float)(DateTimeOffset.Now.ToUnixTimeMilliseconds() / Start), 2)}ms to encode the message");
-            return Serialized;
-        }
+        internal static Dictionary<string, object> CorrectPlayer(Player player) => Utilities.CorrectPlayer(player);
 
         //
         // ==================================

@@ -2,8 +2,10 @@
 using Exiled.Events.EventArgs.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using SockExiled.API.Storage;
 using SockExiled.Extension;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -25,6 +27,12 @@ namespace SockExiled.API.Features.NET.Serializer.Elements
         public Event(object main) 
         {
             UniqId = Guid.NewGuid().ToString();
+
+            if (main is null)
+            {
+                Log.Error("Failed to create a SockExiled Event instance: the given object is null");
+                return;
+            }
 
             Nullable = main is IDeniableEvent;
             
@@ -92,13 +100,13 @@ namespace SockExiled.API.Features.NET.Serializer.Elements
             EncodeTypes(main);
         }
 
-        public Event(string name, EventType eventType, bool nullable, Dictionary<string, object> data)
+        public Event(string name, EventType eventType, bool nullable, Dictionary<string, object> data, string uniqid = null)
         {
             Name = name;
             EventType = eventType;
             Nullable = nullable;
             Data = data;
-            UniqId = Guid.NewGuid().ToString();
+            UniqId = uniqid ?? Guid.NewGuid().ToString();
         }
 
         public Event(string name, EventType eventType, bool nullable = false) : this(name, eventType, nullable, new()) { }
@@ -109,21 +117,29 @@ namespace SockExiled.API.Features.NET.Serializer.Elements
             foreach (PropertyInfo Property in main.GetType().GetProperties().Where(p => p is not null && p.CanRead))
             {
                 var Value = Property.GetValue(main, null);
-                if (Property.PropertyType == typeof(Player) && Value is not null)
+
+                if (Value is null)
+                    continue;
+
+                if (Property.PropertyType == typeof(Player) && Value is Player Player)
                 {
-                    Encoded.Add(Property.Name, ClientExtension.CorrectPlayer((Player)Value));
+                    Dictionary<string, object> Element = Serializer.SerializeElement(Player).ToObject().Diff(PlayerStorage.Cache[Player.Id], false);
+                    Element.Add("Id", Player.Id);
+                    Encoded.Add(Property.Name, Element);
+                }
+                else if (Property.PropertyType.IsValueType)
+                {
+                    Encoded.Add(Property.Name, Value);
                 }
                 else
                 {
-                    // Try encode with json
-                    if (Value.CanBeSerialized())
+                    /*try
                     {
                         Encoded.Add(Property.Name, JsonConvert.SerializeObject(Value));
-                    }
-                    else
+                    } catch(Exception)
                     {
                         Encoded.Add(Property.Name, null);
-                    }
+                    }*/
                 }
             }
 
@@ -139,12 +155,59 @@ namespace SockExiled.API.Features.NET.Serializer.Elements
             }
         });
 
+        public object ToEventArgs(object element)
+        {
+            if (element is null)
+            {
+                Log.Error("ToEventArgs error: provided element is null!");
+                return null;
+            }
+
+            if (element.GetType().Name.Replace("EventArgs", "") != Name)
+            {
+                Log.Warn($"Failed to convert Event object to an EventArgs - Found {element.GetType().Name.Replace("EventArgs", "")}, expected {Name}");
+                return null;
+            }
+
+            // Log.Info("Started to edit the main object...");
+            foreach (PropertyInfo Property in element.GetType().GetProperties().Where(p => p is not null && !p.IsStatic() && p.CanRead && p.CanWrite && Data.ContainsKey(p.Name)))
+            {
+                // Update the element if present in the data
+                try
+                {
+                    // Log.Info($"Trying to change property {Property.Name} to {Data[Property.Name]}");
+                    Property.SetValue(element, Data[Property.Name], null);
+                } 
+                catch (Exception)
+                {
+                    Log.Warn($"Failed to update a value inside the original object {element.GetType().FullName}.\nError while changing type from {Data[Property.Name].GetType().FullName} to {Property.PropertyType.Namespace}.");
+                }
+            }
+
+            return element;
+        }
+
         public static Event Decode(string message)
         {
             try
             {
-                return JsonConvert.DeserializeObject<Event>(message);
-            } 
+                Dictionary<string, object> Data = JsonConvert.DeserializeObject<Dictionary<string, object>>(message);
+
+                if (Data.ContainsKey("Name") && Data.ContainsKey("EventType") && Data.ContainsKey("Nullable") && Data.ContainsKey("Data") && Data.ContainsKey("UniqId"))
+                {
+                    // Let's import it
+                    Enum.TryParse(Data["EventType"].ToString(), out EventType EventType);
+
+                    Data["Data"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(Data["Data"].ToString());
+
+                    /*if (Data["Data"] is Dictionary<string, object> Dictionary && Dictionary.ContainsKey("IsAllowed"))
+                    {
+                        Log.Warn("Key IsAllowed is contained, content: " + Dictionary["IsAllowed"]);
+                    }*/
+
+                    return new(Data["Name"].ToString(), EventType, bool.Parse(Data["Nullable"].ToString()), Data["Data"] as Dictionary<string, object>, Data["UniqId"].ToString());
+                }
+            }
             catch (Exception) { }
 
             return null;
